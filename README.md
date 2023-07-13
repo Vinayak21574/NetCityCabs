@@ -11,6 +11,6 @@ Tech stack used:
 
 Backend->FastAPI, sqlalchemy, pydantic, JWT, OAuth2, CryptContext
 
-Frontend->ReactJS,KonvaJS,TailwindCSS,ChartJS
+Frontend->ReactJS, KonvaJS, TailwindCSS, ChartJS
 
 Database-> Microsoft SQL Server
