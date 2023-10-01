@@ -46,6 +46,7 @@ CREATE TABLE Driver(
     Trips int DEFAULT 0,
 	Salary float NOT NULL check(Salary>0),
 	last_update DATETIME,
+	lastTrip int DEFAULT NULL,
 	PRIMARY KEY (Driver_ID),
     CONSTRAINT recuiter_driver Foreign Key(Admin_ID) REFERENCES Admin (Admin_ID),
     CONSTRAINT manager_driver Foreign Key (Employee_ID) REFERENCES Employee(Employee_ID),

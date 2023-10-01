@@ -47,7 +47,10 @@ async def here(User:User=Depends(fetchUser),db:Session=Depends(get_db)):
     if(db.query(Passenger).get(User.id)):
         return
     if(db.query(Driver).get(User.id)):
-        if(db.query(Trip).filter(Trip.Driver_ID==User.id,Trip.Status!='Ongoing',Trip.Status!='PendingPayment')):
+        temp=db.query(Trip).filter(Trip.Driver_ID==User.id,((Trip.Status=='Ongoing')|(Trip.Status=='PendingPayment'))).all()
+        if temp:
+            return
+        else:
             db.query(drives).filter(drives.Driver_ID==User.id).delete()
             db.commit()
         return
@@ -141,7 +144,8 @@ async def here(args:str,User:User=Depends(fetchUser),db:Session=Depends(get_db))
 
     sleep(1)
     if(not(db.query(Requests).filter(Requests.Driver_ID==args["driver"],Requests.Passg_ID==User.id).first())):
-        temp:Requests=Requests(Driver_ID=args["driver"],Passg_ID=User.id,Drop_ID=args["to"],Pickup_ID=args["from"],Fare=1,Type=args["typ"])
+        # print("HEHEHEHEHEE")
+        temp:Requests=Requests(Driver_ID=args["driver"],Passg_ID=User.id,Drop_ID=args["to"],Pickup_ID=args["from"],Fare=1,Type=args["typ"],Status="Accepted")
         db.add(temp)
         db.commit()
     
@@ -300,6 +304,10 @@ async def here(args,dummy:User=Depends(fetchUser),db:Session=Depends(get_db)):
 
     print(at,pathList,next)
     db.query(Trip).filter(Trip.Trip_ID==temp.Trip_ID).update({Trip.At_ID:next})
+    name=db.query(books).filter(books.Trip_ID==temp.Trip_ID).first().Passg_ID
+    name=db.query(Requests).filter(Requests.Passg_ID==name).first().Driver_ID
+    name=db.query(drives).filter(drives.Driver_ID==name).first().Vehicle_number
+    db.query(Cab).filter(Cab.Vehicle_number==name).update({Cab.At_ID:next})
     db.commit()
     print(args)
 

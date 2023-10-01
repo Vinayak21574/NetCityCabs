@@ -154,7 +154,7 @@ after insert as
 BEGIN
     update Passenger set lastTrip=B.Trip_ID,Trips=Trips+1
     from Passenger as here inner join (
-        select C.Passg_ID,C.Trip_ID from dbo.books as C inner join inserted as i on C.Trip_ID=i.Trip_ID
+        select C.Passg_ID,C.Trip_ID from dbo.books as C inner join inserted as i on C.Trip_ID=i.Trip_ID and C.Passg_ID=i.Passg_ID
     ) as B
     on here.Passg_ID=B.Passg_ID
 
@@ -267,10 +267,12 @@ if exists (
     --     (select * from inserted as i where i.Status='Accepted') as A
     -- on here.Driver_ID=A.Driver_ID where here.Status='On Duty'
 
-    select count(Driver_ID) from (select * from dbo.Requests as here inner join inserted as i
-    on i.Driver_ID=here.Driver_ID where i.Staus='Accepted' and here.Status='Accepted') as A
-    group by Driver_ID
-    having count(Driver_ID)=1
+    -- select count(Driver_ID) from (select * from dbo.Requests as here inner join inserted as i
+    -- on i.Driver_ID=here.Driver_ID where i.Status='Accepted' and here.Status='Accepted') as A
+    -- group by Driver_ID
+    -- having count(Driver_ID)=1
+
+    select * from inserted as i where i.Status='Accepted'
 )
 BEGIN
     delete here from Requests as here inner join inserted as i on (here.Driver_ID=i.Driver_ID) and (here.Status='Pending')
@@ -324,10 +326,13 @@ if exists (
     on i.Driver_ID=here.Driver_ID where here.Status='Accepted' and here.Type='Sharing'
 )
 BEGIN
-    update here set Status='Accepted' from dbo.Requests as here inner join inserted as i
-    on i.Passg_ID=here.Passg_ID and i.Driver_ID=here.Driver_ID
+    -- update here set Status='Accepted' from dbo.Requests as here inner join inserted as i
+    -- on i.Passg_ID=here.Passg_ID and i.Driver_ID=here.Driver_ID
 
     declare @ID bigint
+    declare @drv varchar(50)
+    declare @psg varchar(50)
+    
     select @psg= Passg_ID from inserted
     select @drv= Driver_ID from inserted
     select @ID=Trip_ID from dbo.Trips where Status='Ongoing' and Driver_ID=@drv
@@ -378,3 +383,12 @@ GO
 -- kill 72
 
 -- create database NetCityCabs;
+
+
+-- USE master;
+-- GO
+
+-- ALTER DATABASE NetCityCabs SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+-- GO
+-- DROP DATABASE NetCityCabs;
+-- GO
