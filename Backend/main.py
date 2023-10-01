@@ -69,7 +69,11 @@ async def here(User:User=Depends(fetchUser),db:Session=Depends(get_db)):
 
     if(dummy.lastTrip):
         trip:Trip=db.query(Trip).get(dummy.lastTrip)
-        rate=db.query(Transaction).filter(Transaction.Passg_ID==User.id,Transaction.Trip_ID==trip.Trip_ID).first().Rating
+        rate=db.query(Transaction).filter(Transaction.Passg_ID==User.id,Transaction.Trip_ID==trip.Trip_ID).first()
+        if(rate):
+            rate=rate.Rating
+        else:
+            rate=0
         LastTrip=prev(start=trip.Start_ID,end=trip.End_ID,fare=trip.Fare,rating=rate,available="Yes")
 
     result=Home_Passg(wallet=dummy.Wallet_balance,trips=dummy.Trips,savings=dummy.Savings,last=LastTrip,top=PrevTrips(User.id),latest=TopTrips())
