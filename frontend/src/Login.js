@@ -5,7 +5,8 @@ import logo from './media/NetCityCabs.png'
 import { useState,useRef, useEffect } from "react";
 
 // const LINK="//192.168.1.2:80"
-const LINK="//localhost:80"
+const LINK="//"+document.location.hostname+":80";
+// console.log(LINK);
 
 
 
