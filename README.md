@@ -3,13 +3,17 @@
 
 
 
-A ready-to-be-deployed ACID-compliant, REST-based web application based on navigation services offered by a cyber hub in an idealized scenario. Features OAuth & encryption standards, custom Google Maps API, Business Intelligence dashboards, and automated real-time data management. Stakeholders include Passengers, Drivers, & Admins.   
-
+A production-ready ACID-compliant, REST-based web app rooted 
+in a visionary cyber hub's navigation services. Features robust security 
+measures, including OAuth and encryption protocols, a custom Google Maps 
+like tracking integration and Business Intelligence dashboards. Engineered 
+for real-time data management automation, catering to the needs of 
+passengers, drivers, and administrators alike
 
 
 Tech stack used: 
 
-Backend->FastAPI, sqlalchemy, pydantic, JWT, OAuth2, CryptContext 
+Backend->FastAPI, sqlalchemy, JWT, OAuth2 
 
 Frontend->ReactJS, KonvaJS, TailwindCSS, ChartJS 
 
